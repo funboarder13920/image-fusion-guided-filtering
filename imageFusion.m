@@ -66,7 +66,7 @@ figure(3);
 imshow(F)
 
 figure(4);
-imshow([P1,Wb1,Wd1],[0,1]);
+imshow([S1,P1,Wb1,Wd1],[0,1]);
 
 figure(5);
-imshow([P2,Wb2,Wd2],[0,1]);
+imshow([S2,P2,Wb2,Wd2],[0,1]);
