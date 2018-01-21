@@ -1,6 +1,6 @@
 %% Load images
-I1 = im2double(imread('sourceimages\test3\static_1.jpg'));
-I2 = im2double(imread('sourceimages\test3\static_2.jpg'));
+I1 = im2double(imread('sourceimages\test4\Lenna1.png'));
+I2 = im2double(imread('sourceimages\test4\Lenna2.png'));
 figure(1);
 imshow(I1);
 
