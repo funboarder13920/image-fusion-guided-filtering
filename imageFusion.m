@@ -47,6 +47,15 @@ Wd1 = guidedfilter(Ig1, P1, r2, eps2);
 Wb2 = guidedfilter(Ig2, P2, r1, eps1);
 Wd2 = guidedfilter(Ig2, P2, r2, eps2);
 
+% normalizing weights
+Sumb = Wb1 + Wb2;
+Sumd = Wd1 + Wd2;
+Wb1 = Wb1./Sumb;
+Wd1 = Wd1./Sumd;
+Wb2 = Wb2./Sumb;
+Wd2 = Wd2./Sumd;
+
+
 %% step C: two-scale image reconstruction
 
 Bb = repmat(Wb1, [1 1 3]) .* B1 + repmat(Wb2, [1 1 3]) .* B2;
@@ -55,3 +64,9 @@ Db = repmat(Wd1, [1 1 3]) .* D1 + repmat(Wd2, [1 1 3]) .* D2;
 F = Bb + Db;
 figure(3);
 imshow(F)
+
+figure(4);
+imshow([P1,Wb1,Wd1],[0,1]);
+
+figure(5);
+imshow([P2,Wb2,Wd2],[0,1]);
