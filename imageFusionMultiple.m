@@ -1,8 +1,7 @@
 %% Load images
-Iall = im2double(imread('sourceimages\fly\Focus_stacking_Tachinid_fly.jpg'));
-Iinit = Iall(:,640*2+1:end,:);
-I1 = Iall(:,1:640,:);
-I2 = Iall(:,641:640*2,:);
+Iinit = im2double(imread('sourceimages\test4\Lenna.png'));
+I1 = im2double(imread('sourceimages\test4\Lenna1.png'));
+I2 = im2double(imread('sourceimages\test4\Lenna2.png'));
 I = [];
 I(1,:,:,:) = I1;
 I(2,:,:,:) = I2;

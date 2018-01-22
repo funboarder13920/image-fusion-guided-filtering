@@ -11,9 +11,9 @@ imshow(I2);
 
 %% Choice of parameters
 w1     = 5;       % bilateral filter half-width
-sigma1 = [3 0.1]; % bilateral filter standard deviations
-w2     = 2;       % bilateral filter half-width
-sigma2 = [1 1]; % bilateral filter standard deviations
+sigma1 = [45 sqrt(0.3)]; % bilateral filter standard deviations
+w2     = 5;       % bilateral filter half-width
+sigma2 = [7 10^-3]; % bilateral filter standard deviations
 
 %% step A : two-scale image decomposition
 % B1 and B2: blured images
