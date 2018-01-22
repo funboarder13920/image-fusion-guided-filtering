@@ -1,4 +1,5 @@
 %% Load images
+I = im2double(imread('sourceimages\test4\Lenna.png'));
 I1 = im2double(imread('sourceimages\test4\Lenna1.png'));
 I2 = im2double(imread('sourceimages\test4\Lenna2.png'));
 figure(1);
@@ -70,3 +71,7 @@ imshow([S1,P1,Wb1,Wd1],[0,1]);
 
 figure(5);
 imshow([S2,P2,Wb2,Wd2],[0,1]);
+
+figure(6);
+Idiff = F-I;
+imshow(Idiff-min(Idiff(:))/(max(Idiff(:))-min(Idiff(:))));

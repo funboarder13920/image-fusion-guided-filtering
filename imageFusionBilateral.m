@@ -10,10 +10,10 @@ imshow(I2);
 
 
 %% Choice of parameters
-r1 = 45;
-eps1 = 0.3;
-r2 = 7;
-eps2 = 10^-6;
+w1     = 5;       % bilateral filter half-width
+sigma1 = [3 0.1]; % bilateral filter standard deviations
+w2     = 2;       % bilateral filter half-width
+sigma2 = [1 1]; % bilateral filter standard deviations
 
 %% step A : two-scale image decomposition
 % B1 and B2: blured images
@@ -26,11 +26,13 @@ D1 = I1 - B1;
 D2 = I2 - B2;
 
 %% step B weight map construction
+Ig1 = rgb2gray(I1);
+Ig2 = rgb2gray(I2);
 
 % laplacian filtering
 laplacian_filter = [[0 -1 0]; [-1 4 -1]; [0 -1 0]];
-H1 = convn( I1, laplacian_filter, 'same');
-H2 = convn( I2, laplacian_filter, 'same');
+H1 = convn( Ig1, laplacian_filter, 'same');
+H2 = convn( Ig2, laplacian_filter, 'same');
 
 % gaussian filtering
 S1 = imgaussfilt(abs(H1), 'FilterSize', 11);
@@ -41,26 +43,10 @@ P1 = (S1 == max(S1, S2));
 P2 = (S2 == max(S1, S2));
 
 % r1, eps1, r2 and eps2 are not related to the index of I1, P1, I2, P2, etc
-Wb1 = [];
-Wb1(:,:,1) = guidedfilter(I1(:,:,1), P1(:,:,1), r1, eps1);
-Wb1(:,:,2) = guidedfilter(I1(:,:,2), P1(:,:,2), r1, eps1);
-Wb1(:,:,3) = guidedfilter(I1(:,:,3), P1(:,:,3), r1, eps1);
-
-Wd1 = [];
-Wd1(:,:,1) = guidedfilter(I1(:,:,1), P1(:,:,1), r2, eps2);
-Wd1(:,:,2) = guidedfilter(I1(:,:,2), P1(:,:,2), r2, eps2);
-Wd1(:,:,3) = guidedfilter(I1(:,:,3), P1(:,:,3), r2, eps2);
-
-Wb2 = [];
-Wb2(:,:,1) = guidedfilter(I2(:,:,1), P2(:,:,1), r1, eps1);
-Wb2(:,:,2) = guidedfilter(I2(:,:,2), P2(:,:,2), r1, eps1);
-Wb2(:,:,3) = guidedfilter(I2(:,:,3), P2(:,:,3), r1, eps1);
-
-Wd2 = [];
-Wd2(:,:,1) = guidedfilter(I2(:,:,1), P2(:,:,1), r2, eps2);
-Wd2(:,:,2) = guidedfilter(I2(:,:,2), P2(:,:,2), r2, eps2);
-Wd2(:,:,3) = guidedfilter(I2(:,:,3), P2(:,:,3), r2, eps2);
-
+Wb1 = bfilter2(Ig1, w1, sigma1);
+Wd1 = bfilter2(Ig1, w2, sigma2);
+Wb2 = bfilter2(Ig2, w1, sigma1);
+Wd2 = bfilter2(Ig2, w2, sigma2);
 
 % normalizing weights
 Sumb = Wb1 + Wb2;
@@ -73,8 +59,8 @@ Wd2 = Wd2./Sumd;
 
 %% step C: two-scale image reconstruction
 
-Bb = Wb1 .* B1 + Wb2 .* B2;
-Db = Wd1 .* D1 + Wd2 .* D2;
+Bb = repmat(Wb1, [1 1 3]) .* B1 + repmat(Wb2, [1 1 3]) .* B2;
+Db = repmat(Wd1, [1 1 3]) .* D1 + repmat(Wd2, [1 1 3]) .* D2;
 
 F = Bb + Db;
 figure(3);
