@@ -39,14 +39,14 @@ S1 = imgaussfilt(abs(H1), 'FilterSize', 11);
 S2 = imgaussfilt(abs(H2), 'FilterSize', 11);
 
 % maybe reshape P1 and P2
-P1 = (S1 == max(S1, S2));
-P2 = (S2 == max(S1, S2));
+P1 = double((S1 == max(S1, S2)));
+P2 = double((S2 == max(S1, S2)));
 
 % r1, eps1, r2 and eps2 are not related to the index of I1, P1, I2, P2, etc
-Wb1 = bfilter2(Ig1, w1, sigma1);
-Wd1 = bfilter2(Ig1, w2, sigma2);
-Wb2 = bfilter2(Ig2, w1, sigma1);
-Wd2 = bfilter2(Ig2, w2, sigma2);
+Wb1 = jbfilter2(P1, Ig1, w1, sigma1);
+Wd1 = jbfilter2(P1, Ig1, w2, sigma2);
+Wb2 = jbfilter2(P2, Ig2, w1, sigma1);
+Wd2 = jbfilter2(P2, Ig2, w2, sigma2);
 
 % normalizing weights
 Sumb = Wb1 + Wb2;
