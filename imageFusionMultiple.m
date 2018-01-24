@@ -1,16 +1,36 @@
 %% Load images
-Iinit = im2double(imread('sourceimages\test4\Lenna.png'));
-I1 = im2double(imread('sourceimages\test4\Lenna1.png'));
-I2 = im2double(imread('sourceimages\test4\Lenna2.png'));
+%Iinit = im2double(imread('sourceimages\test4\Lenna.png'));
+% I1 = im2double(imread('sourceimages\test4\Lenna3.png'));
+% I2 = im2double(imread('sourceimages\test4\Lenna4.png'));
+% I3 = im2double(imread('sourceimages\test4\Lenna5.png'));
+% I4 = im2double(imread('sourceimages\test4\Lenna6.png'));
+%
+% I(1,:,:,:) = I1;
+% I(2,:,:,:) = I2;
+% I(3,:,:,:) = I3;
+% I(4,:,:,:) = I4;
+
+myFolder = 'sourceimages\5';
+filePattern = fullfile(myFolder, '*.jpg');%'Img*.jpg'); % Change to whatever pattern you need.
+theFiles = dir(filePattern);
+
 I = [];
-I(1,:,:,:) = I1;
-I(2,:,:,:) = I2;
+Iinit = im2double(imread('sourceimages\3\result.jpg'));
+
+for k = 1 : length(theFiles)
+    baseFileName = theFiles(k).name;
+    fullFileName = fullfile(myFolder, baseFileName);
+    I(k,:,:,:) =  im2double(imresize(imread(fullFileName),0.25));
+end
+
 figure(1);
 imshow(squeeze(I(1,:,:,:)));
 
 figure(2);
 imshow(squeeze(I(2,:,:,:)));
 
+figure(21);
+imshow(squeeze(I(3,:,:,:)));
 
 %% Choice of parameters
 r1 = 45;
@@ -59,7 +79,7 @@ end
 Wb = zeros(size(P));
 Wd = zeros(size(P));
 for i=1:size(I,1)
-    Wb(i,:,:) =  guidedfilter(squeeze(Ig(i,:,:)), squeeze(P(i,:,:)), r1, eps1);
+    Wb(i,:,:) = guidedfilter(squeeze(Ig(i,:,:)), squeeze(P(i,:,:)), r1, eps1);
     Wd(i,:,:) = guidedfilter(squeeze(Ig(i,:,:)), squeeze(P(i,:,:)), r2, eps2);
 end
 
